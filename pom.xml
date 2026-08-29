@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.arcane</groupId>
+    <artifactId>SohranSMP</artifactId>
+    <version>2.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>SohranSMP</name>
+    <description>Smp de Sohran - Portage Paper 26.2</description>
+
+    <properties>
+        <!-- Paper 26.2 nécessite Java 25 pour tourner -->
+        <java.version>25</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <repositories>
+        <!-- Dépôt officiel PaperMC (remplace l'ancien hub.spigotmc.org, obsolète) -->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <!-- Dépôt Maven officiel de NickAPI (fourni depuis la v7.x, plus besoin de jar local) -->
+        <repository>
+            <id>nickapi</id>
+            <url>https://haoshoku.xyz:8081/repository/default/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Paper API 26.2 (dernière build stable au moment du portage : 26.2.build.119) -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>26.2.build.119-stable</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- NickAPI 7.11 (dernière version connue au moment du portage, compatible 1.21.11).
+             À vérifier / mettre à jour une fois qu'une build officiellement estampillée
+             "26.2" est publiée par l'auteur - voir README.md joint. -->
+        <dependency>
+            <groupId>xyz.haoshoku.nick</groupId>
+            <artifactId>nickapi</artifactId>
+            <version>7.11</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

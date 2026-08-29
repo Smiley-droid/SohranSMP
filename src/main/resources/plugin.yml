@@ -1,0 +1,13 @@
+name: SohranSMP
+version: '2.0.0'
+main: fr.arcane.sohransmp.SohranSMP
+# Versions valides : 1.13 - 26.2 (voir docs.papermc.io/paper/dev/plugin-yml)
+api-version: '26.2'
+authors: [ Arcane ]
+description: Smp de Sohran
+depend: [NickAPI]
+commands:
+  undisguise:
+    description: Commande pour reset son déguisement
+  givehead:
+    description: Commande pour générer une tête "/givehead <nom du joueur>"
