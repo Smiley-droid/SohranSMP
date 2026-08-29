@@ -1,0 +1,22 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< fr.arcane:SohranSMP >-------------------------
+[INFO] Building SohranSMP 2.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14.514 s
+[INFO] Finished at: 2026-08-29T21:45:07Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project SohranSMP: Could not collect dependencies for project fr.arcane:SohranSMP:jar:2.0.0
+[ERROR] Failed to read artifact descriptor for xyz.haoshoku.nick:nickapi:jar:7.11
+[ERROR] 	Caused by: The following artifacts could not be resolved: xyz.haoshoku.nick:nickapi:pom:7.11 (absent): Could not transfer artifact xyz.haoshoku.nick:nickapi:pom:7.11 from/to nickapi (https://haoshoku.xyz:8081/repository/default/): Connect to haoshoku.xyz:8081 [haoshoku.xyz/109.71.253.4] failed: Connect timed out
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
