@@ -54,9 +54,13 @@ Un workflow est fourni dans `.github/workflows/build.yml` :
 
 Pour l'activer, il suffit de pousser ce dossier tel quel dans un dépôt GitHub — aucune configuration supplémentaire n'est nécessaire (le `GITHUB_TOKEN` utilisé pour créer la release est fourni automatiquement par GitHub Actions).
 
-## ⚠️ Non testé en conditions réelles sur un serveur
+## ✅ Build vérifié en conditions réelles
 
-Le `.jar` compile (vérifié via le workflow GitHub Actions du dépôt). En revanche, le comportement
-en jeu — notamment la compatibilité de NickAPI 7.11 avec Minecraft 26.2 au niveau NMS — **n'a pas
-pu être testé sur un vrai serveur** depuis cet environnement. Teste sur un serveur de
-développement avant mise en production.
+Le workflow GitHub Actions a été testé de bout en bout et **compile intégralement avec succès**
+(run [`ecec86d`](https://github.com/Smiley-droid/SohranSMP/actions) — Java 25, Maven, `paper-api
+26.2.build.119-stable`, `libs/NickAPI.jar` 7.11). Le `.jar` final est bien généré et disponible en
+artifact de la run.
+
+Ce qui **n'a en revanche pas pu être testé** depuis cet environnement : le comportement en jeu sur
+un vrai serveur Paper 26.2 — notamment la compatibilité de NickAPI 7.11 avec le NMS de 26.2 (voir
+avertissement plus haut). Teste sur un serveur de développement avant mise en production.
