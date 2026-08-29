@@ -33,17 +33,22 @@ jobs:
           set -o pipefail
           mvn -B -ntp clean package 2>&1 | tee build.log
 
-      - name: Diagnostic en cas d'échec (annotations lisibles depuis l'API)
+      - name: Publication du log de build en cas d'échec (pour diagnostic)
         if: steps.build.outcome == 'failure'
         run: |
-          echo "::group::Lignes [ERROR] du build"
-          grep -n "\[ERROR\]" build.log || true
-          echo "::endgroup::"
-          grep "\[ERROR\]" build.log | head -20 | while IFS= read -r line; do
-            safe=$(echo "$line" | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
-            echo "::error::${safe}"
-          done
-          exit 1
+          mkdir -p build-logs
+          cp build.log "build-logs/${{ github.run_id }}.log"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan "ci-logs/${{ github.run_id }}"
+          git rm -rf --cached . > /dev/null 2>&1 || true
+          git add "build-logs/${{ github.run_id }}.log"
+          git commit -q -m "CI log run ${{ github.run_id }}"
+          git push origin "HEAD:refs/heads/ci-logs/${{ github.run_id }}"
+
+      - name: Échec du job si la compilation a échoué
+        if: steps.build.outcome == 'failure'
+        run: exit 1
 
       - name: Récupération du nom du jar généré
         id: jarfile
