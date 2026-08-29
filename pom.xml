@@ -60,11 +60,9 @@
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
-        <!-- Dépôt Maven officiel de NickAPI (fourni depuis la v7.x, plus besoin de jar local) -->
-        <repository>
-            <id>nickapi</id>
-            <url>https://haoshoku.xyz:8081/repository/default/</url>
-        </repository>
+        <!-- Le dépôt Maven privé de NickAPI (https://haoshoku.xyz:8081/repository/default/)
+             s'est avéré injoignable depuis les runners GitHub Actions (timeout) : on utilise
+             un jar local (voir dependency "system" ci-dessous + libs/README.md) à la place. -->
     </repositories>
 
     <dependencies>
@@ -76,14 +74,17 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- NickAPI 7.11 (dernière version connue au moment du portage, compatible 1.21.11).
-             À vérifier / mettre à jour une fois qu'une build officiellement estampillée
-             "26.2" est publiée par l'auteur - voir README.md joint. -->
+        <!-- NickAPI 7.11 : le dépôt Maven privé de l'auteur (haoshoku.xyz:8081) s'est révélé
+             injoignable depuis les runners GitHub Actions (connexion en timeout - probablement
+             une restriction IP côté auteur). On utilise donc un jar local committé dans libs/,
+             comme le faisait le pom.xml d'origine avec un chemin Windows en dur.
+             Voir libs/README.md pour savoir comment l'obtenir. -->
         <dependency>
             <groupId>xyz.haoshoku.nick</groupId>
             <artifactId>nickapi</artifactId>
             <version>7.11</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/NickAPI.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

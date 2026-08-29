@@ -26,6 +26,13 @@ jobs:
           java-version: '25'
           cache: maven
 
+      - name: Vérification de la présence de libs/NickAPI.jar
+        run: |
+          if [ ! -f "libs/NickAPI.jar" ]; then
+            echo "::error::libs/NickAPI.jar est manquant. Voir libs/README.md pour savoir comment l'obtenir et l'ajouter au dépôt."
+            exit 1
+          fi
+
       - name: Compilation avec Maven
         id: build
         continue-on-error: true
