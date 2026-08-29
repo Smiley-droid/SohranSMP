@@ -1,36 +1,29 @@
-# NickAPI.jar requis ici
+# NickAPI.jar
 
 Le dépôt Maven privé de NickAPI (`https://haoshoku.xyz:8081/repository/default/`) s'est
 révélé **injoignable depuis les runners GitHub Actions** (connexion en timeout), probablement
 suite à une restriction d'accès par IP mise en place par l'auteur. La compilation en CI dépend
-donc d'un jar committé directement dans ce dossier.
+donc de ce jar committé directement dans ce dossier (`NickAPI.jar`, version 7.11).
 
-## Comment l'obtenir
+## Vérification des méthodes utilisées
 
-1. Va sur la page SpigotMC de NickAPI :
+Toutes les méthodes appelées dans le code du plugin (`SkinUtil`, `HeadEvent`, `DisguiseKeeper`,
+`UndisguiseCommand`) ont été vérifiées par inspection directe du bytecode de ce jar :
+`setNick`, `setSkin`, `setProfileName`, `setUniqueId`, `refreshPlayer`, `resetNick`, `resetSkin`,
+`resetProfileName`, `resetUniqueId`, `isNicked`, `getOriginalName` sont bien toutes présentes
+dans `xyz/haoshoku/nick/api/NickAPI.class`.
+
+## Mise à jour future
+
+Si tu passes à une version plus récente de NickAPI (ex. après une éventuelle mise à jour
+"officiellement 26.2" par l'auteur) :
+1. Télécharge la nouvelle version depuis
    https://www.spigotmc.org/resources/nickapi-1-8-8-1-20-2-1-21.26013/
-2. Télécharge la version **7.11** (ou plus récente si disponible — vérifie la compatibilité 26.2
-   avant, voir le README principal).
-3. Renomme le fichier téléchargé en exactement : `NickAPI.jar`
-4. Place-le dans ce dossier (`libs/NickAPI.jar`).
-5. Commit & push :
-   ```bash
-   git add libs/NickAPI.jar
-   git commit -m "Ajout du jar NickAPI 7.11"
-   git push
-   ```
-
-Le build GitHub Actions se relancera automatiquement et devrait alors passer la phase de
-résolution des dépendances.
-
-## Pourquoi un jar local plutôt qu'une dépendance Maven ?
-
-NickAPI n'est pas publié sur Maven Central et son propre dépôt Maven n'est, en pratique, pas
-accessible depuis l'infrastructure GitHub Actions. C'est la même limitation que rencontrait déjà
-le `pom.xml` d'origine du plugin (qui pointait vers un chemin Windows local en dur,
-`C:/BuildTool/NickAPI/NickAPI-v6.5.3.jar`) — on formalise juste la même approche de façon
-portable et versionnée dans le dépôt.
+2. Remplace ce fichier (`libs/NickAPI.jar`)
+3. Mets à jour le numéro de version dans `pom.xml` (`<version>7.11</version>`)
+4. Commit & push — le build GitHub Actions se relance automatiquement.
 
 ⚠️ Ce dépôt étant privé, committer ce jar ne le rend pas public. Si tu changes la visibilité du
 dépôt en public un jour, vérifie d'abord que la licence de NickAPI autorise la redistribution du
 jar, sinon retire-le et repasse par un téléchargement manuel côté CI/serveur.
+

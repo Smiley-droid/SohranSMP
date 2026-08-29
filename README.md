@@ -29,7 +29,8 @@ Le plugin dépend entièrement de **NickAPI** (par Haoshoku) pour changer le ski
 - **Compatibilité 26.2** : au moment de ce portage, la dernière version publique de NickAPI est la **7.11** (31 janvier 2026), officiellement annoncée pour 1.8.8 / 1.20.2+ / 1.21. Minecraft 26.2 étant sorti après (16 juin 2026) et NickAPI travaillant directement au niveau NMS (elle publie une classe `Handler_v1_21_RX` par version), **il n'est pas garanti qu'elle fonctionne sans une mise à jour de l'auteur**. Avant de mettre ça en production :
   1. Vérifiez sur https://www.spigotmc.org/resources/nickapi-1-8-8-1-20-2-1-21.26013/updates si une version postérieure au 26.2 est sortie.
   2. Si non, testez sur un serveur de test — NickAPI a plusieurs retours d'utilisateurs signalant des soucis de compatibilité (bugs `NoSuchElementException` sur les versions toutes fraîches, cf. les avis sur SpigotMC).
-- NickAPI **n'est pas open-source et n'est pas sur Maven Central**. J'ai d'abord essayé de pointer le `pom.xml` vers le dépôt Maven officiel de l'auteur (`https://haoshoku.xyz:8081/repository/default/`), **mais ce dépôt s'est révélé injoignable depuis les runners GitHub Actions** (connexion en timeout — probablement une restriction d'accès par IP côté auteur, testé en conditions réelles via le workflow CI). Le `pom.xml` utilise donc désormais une dépendance `system` pointant vers `libs/NickAPI.jar`, **que tu dois fournir toi-même** — voir `libs/README.md` pour la marche à suivre. C'est le même principe que le `pom.xml` d'origine (qui pointait vers un chemin Windows local en dur), en version portable et versionnée.
+- NickAPI **n'est pas open-source et n'est pas sur Maven Central**. J'ai d'abord essayé de pointer le `pom.xml` vers le dépôt Maven officiel de l'auteur (`https://haoshoku.xyz:8081/repository/default/`), **mais ce dépôt s'est révélé injoignable depuis les runners GitHub Actions** (connexion en timeout — testé en conditions réelles via le workflow CI). Le `pom.xml` utilise donc une dépendance `system` pointant vers `libs/NickAPI.jar`, **committé dans le dépôt** (version 7.11, fournie par toi). C'est le même principe que le `pom.xml` d'origine (qui pointait vers un chemin Windows local en dur), en version portable et versionnée.
+- **Toutes les méthodes NickAPI utilisées dans le code ont été vérifiées par inspection directe du bytecode du jar fourni** (`setNick`, `setSkin`, `setProfileName`, `setUniqueId`, `refreshPlayer`, `resetNick`, `resetSkin`, `resetProfileName`, `resetUniqueId`, `isNicked`, `getOriginalName`) : elles existent bien telles quelles dans `xyz/haoshoku/nick/api/NickAPI.class`. Le portage est donc fiable sur ce point.
 
 ## Autres changements de comportement mineurs
 
@@ -53,6 +54,9 @@ Un workflow est fourni dans `.github/workflows/build.yml` :
 
 Pour l'activer, il suffit de pousser ce dossier tel quel dans un dépôt GitHub — aucune configuration supplémentaire n'est nécessaire (le `GITHUB_TOKEN` utilisé pour créer la release est fourni automatiquement par GitHub Actions).
 
-## ⚠️ Non testé en conditions réelles
+## ⚠️ Non testé en conditions réelles sur un serveur
 
-Je n'ai pas pu compiler ce portage dans mon environnement (accès réseau restreint : `repo.papermc.io` et `haoshoku.xyz` ne sont pas joignables depuis ce bac à sable). Le code a été relu attentivement et s'appuie sur la documentation officielle Paper 26.2 à jour, mais **la première compilation réelle se fera soit chez vous, soit via le GitHub Action fourni** — surveillez les logs de build pour d'éventuels ajustements mineurs, notamment sur `NickAPI.isNicked` / `NickAPI.getOriginalName` (voir section ci-dessus).
+Le `.jar` compile (vérifié via le workflow GitHub Actions du dépôt). En revanche, le comportement
+en jeu — notamment la compatibilité de NickAPI 7.11 avec Minecraft 26.2 au niveau NMS — **n'a pas
+pu être testé sur un vrai serveur** depuis cet environnement. Teste sur un serveur de
+développement avant mise en production.
