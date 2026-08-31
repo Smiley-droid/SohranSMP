@@ -11,3 +11,7 @@ commands:
     description: Commande pour reset son déguisement
   givehead:
     description: Commande pour générer une tête "/givehead <nom du joueur>"
+permissions:
+  sohransmp.givehead:
+    description: Autorise l'utilisation de /givehead
+    default: op

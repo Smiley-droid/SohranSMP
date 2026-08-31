@@ -35,6 +35,9 @@ public class DisguiseKeeper implements Listener {
          SohranSMP.plugin.saveConfig();
          SohranSMP.plugin.reloadConfig();
          SohranSMP.plugin.getLogger().info("Déguisement sauvegardé pour " + e.getPlayer().getName());
+         // Comme pour le message de connexion, on affiche le pseudo déguisé (et non
+         // le vrai pseudo) dans le message de déconnexion.
+         e.quitMessage(SohranSMP.format("&e" + currentDisplayName + " left the game"));
       } else {
          SohranSMP.plugin.getLogger().info("Aucun déguisement à sauvegarder pour " + e.getPlayer().getName());
       }

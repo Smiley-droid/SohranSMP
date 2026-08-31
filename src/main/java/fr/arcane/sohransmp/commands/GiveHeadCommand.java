@@ -14,6 +14,10 @@ public class GiveHeadCommand implements CommandExecutor {
    @Override
    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
       if (sender instanceof Player p) {
+         if (!p.hasPermission("sohransmp.givehead")) {
+            p.sendMessage(SohranSMP.format("&cTu n'as pas la permission d'utiliser cette commande."));
+            return true;
+         }
          if (args.length >= 1) {
             ItemStack skull = SkinUtil.createHead(args[0]);
             p.getInventory().addItem(skull);
