@@ -2,6 +2,8 @@ package fr.arcane.sohransmp;
 
 import fr.arcane.sohransmp.commands.GiveHeadCommand;
 import fr.arcane.sohransmp.commands.UndisguiseCommand;
+import fr.arcane.sohransmp.crafting.DisguiseHeadRecipe;
+import fr.arcane.sohransmp.events.DisguiseCraftListener;
 import fr.arcane.sohransmp.events.DisguiseKeeper;
 import fr.arcane.sohransmp.events.HeadEvent;
 import net.kyori.adventure.text.Component;
@@ -30,6 +32,8 @@ public final class SohranSMP extends JavaPlugin {
 
       this.getServer().getPluginManager().registerEvents(new HeadEvent(), this);
       this.getServer().getPluginManager().registerEvents(new DisguiseKeeper(), this);
+      this.getServer().getPluginManager().registerEvents(new DisguiseCraftListener(), this);
+      DisguiseHeadRecipe.register(this);
 
       var undisguiseCommand = this.getCommand("undisguise");
       var giveHeadCommand = this.getCommand("givehead");
