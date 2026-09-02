@@ -52,16 +52,23 @@ public class DisguiseHeadRecipe {
    private static ItemStack createBlankHead(SohranSMP plugin) {
       ItemStack item = new ItemStack(Material.PLAYER_HEAD);
       ItemMeta meta = item.getItemMeta();
-      if (meta != null) {
-         meta.displayName(Component.text(DEFAULT_NAME, NamedTextColor.LIGHT_PURPLE)
+      if (meta instanceof org.bukkit.inventory.meta.SkullMeta skullMeta) {
+         // "Kraetos" est un compte Mojang connu dont le skin est un point
+         // d'interrogation - utilisé ici comme visuel pour la tête tant
+         // qu'elle n'a pas été configurée (renommée) par le joueur.
+         org.bukkit.OfflinePlayer kraetos = org.bukkit.Bukkit.getOfflinePlayer("Kraetos");
+         if (kraetos.getPlayerProfile() != null) {
+            skullMeta.setOwnerProfile(kraetos.getPlayerProfile());
+         }
+         skullMeta.displayName(Component.text(DEFAULT_NAME, NamedTextColor.LIGHT_PURPLE)
                .decoration(TextDecoration.ITALIC, false));
-         meta.lore(List.of(
+         skullMeta.lore(List.of(
                Component.text("Renomme cet objet dans une enclume", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                Component.text("avec le nom du joueur à imiter,", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                Component.text("puis fais Clic-Droit pour te déguiser.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
          ));
-         meta.getPersistentDataContainer().set(key(plugin), PersistentDataType.BOOLEAN, true);
-         item.setItemMeta(meta);
+         skullMeta.getPersistentDataContainer().set(key(plugin), PersistentDataType.BOOLEAN, true);
+         item.setItemMeta(skullMeta);
       }
       return item;
    }
