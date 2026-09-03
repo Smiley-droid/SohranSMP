@@ -52,8 +52,34 @@ public class HeadEvent implements Listener {
    @EventHandler
    public void dropHeadOnDeath(PlayerDeathEvent e) {
       Player victim = e.getEntity();
+
+      // On capture les noms affichés (déguisés) AVANT de reset le déguisement,
+      // pour pouvoir les injecter dans le message de mort.
+      String victimShown = PlainTextComponentSerializer.plainText().serialize(victim.displayName());
+      Player killer = victim.getKiller();
+      String killerShown = killer != null
+            ? PlainTextComponentSerializer.plainText().serialize(killer.displayName())
+            : null;
+
+      Component deathMessage = e.deathMessage();
+      if (deathMessage != null) {
+         String plainMessage = PlainTextComponentSerializer.plainText().serialize(deathMessage);
+         plainMessage = replaceWholeWord(plainMessage, victim.getName(), victimShown);
+         if (killer != null && killerShown != null) {
+            plainMessage = replaceWholeWord(plainMessage, killer.getName(), killerShown);
+         }
+         e.deathMessage(Component.text(plainMessage));
+      }
+
       SkinUtil.resetPlayer(victim);
       victim.sendMessage(SohranSMP.format("&cTu as perdu ton déguisement en mourrant (rip bozo)"));
       e.getDrops().add(SkinUtil.createHead(NickAPI.getOriginalName(victim)));
+   }
+
+   private String replaceWholeWord(String text, String from, String to) {
+      if (from == null || to == null || from.isEmpty() || from.equals(to)) {
+         return text;
+      }
+      return text.replaceAll("\\b" + java.util.regex.Pattern.quote(from) + "\\b", java.util.regex.Matcher.quoteReplacement(to));
    }
 }
